@@ -11,6 +11,7 @@ File topFile;
 int seconds;
 float altitude_val, pre_altitude_val, temperature_val, pressure_val;
 boolean top_alt = false;
+boolean reach_ground = false;
 Adafruit_BMP280 bmp;
 
 
@@ -66,36 +67,34 @@ void setup(){
 
 void loop(){
 
-    // Read sensors
+    if (!reach_ground) {
+        // Read sensors
 
-    pre_altitude_val = altitude_val;
-    delay(1000);
-    altitude_val = bmp.readAltitude(1013.25);
-
-    temperature_val = bmp.readTemperature();
-    pressure_val = bmp.readPressure()/100;
+        altitude_val = bmp.readAltitude(1013.25);
+        temperature_val = bmp.readTemperature();
+        pressure_val = bmp.readPressure()/100;
 
 
-    //Save information SD
+        //Save information SD
 
-    myFile = SD.open("datalog.csv", FILE_WRITE);
+        myFile = SD.open("datalog.csv", FILE_WRITE);
 
-    if(myFile) {
-        myFile.print(seconds);
-        myFile.print(",");
-        myFile.print(temperature_val);
-        myFile.print(",");
-        myFile.print(pressure_val);
-        myFile.print(",");
-        myFile.println(altitude_val);
+        if(myFile) {
+            myFile.print(seconds);
+            myFile.print(",");
+            myFile.print(temperature_val);
+            myFile.print(",");
+            myFile.print(pressure_val);
+            myFile.print(",");
+            myFile.println(altitude_val);
        
-       myFile.close();
+         myFile.close();
+        }
+
+
+        //Send information Radio
+
     }
-
-
-    //Send information Radio
-
-
 
     //check if it has reached the top
 
@@ -122,7 +121,11 @@ void loop(){
     else if(pre_altitude_val == altitude_val && top_alt) {
 
         tone(buzz_pin, 600);
+        reach_ground = true;
     }
 
-    seconds += 1;
+    pre_altitude_val = altitude_val;
+
+    delay(1000);
+    seconds ++;
 }
