@@ -2,18 +2,25 @@
 #include <SPI.h>
 #include <Wire.h>
 #include <SD.h>
+#include <SoftwareSerial.h>
+#include <TinyGPS.h>
 
 #define CS_pin 10
 #define LED_pin 7
 #define buzz_pin 2
-File myFile;
-File topFile;
+#define RX_pin 4
+#define TX_pin 3
+
 int seconds;
 float altitude_val, pre_altitude_val, temperature_val, pressure_val;
 boolean top_alt = false;
 boolean reach_ground = false;
-Adafruit_BMP280 bmp;
 
+File myFile;
+File topFile;
+Adafruit_BMP280 bmp;
+TinyGPS gps;
+SoftwareSerial softSerial(RX_pin, TX_pin);
 
 void setup(){
 

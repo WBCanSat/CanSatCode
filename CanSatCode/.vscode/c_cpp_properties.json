@@ -3,6 +3,7 @@
         {
             "name": "Win32",
             "includePath": [
+                "C:\\Users\\juqui\\OneDrive\\Documentos\\Arduino\\libraries\\TinyGPS\\src",
                 "C:\\Users\\juqui\\OneDrive\\Documentos\\Arduino\\libraries\\Adafruit_BMP280_Library",
                 "D:\\Aplicaciones\\Arduino\\hardware\\arduino\\avr\\libraries\\SPI\\src",
                 "D:\\Aplicaciones\\Arduino\\tools\\**",
