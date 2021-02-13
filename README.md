@@ -16,5 +16,5 @@ The objective of the Primary Mission is to measure two parameters while the CanS
 In this case, the Secondary Mission is of our choice and decided by our group. Our idea for the Secondary Mission came up as a modification of a previous idea we decided not to use, the objective is to identify the increase of gas emissions of greenhouse effect in landfills, industries, overcrowded cities and other danger zones that harm the environment and so it’s above the imposed in the Paris agreement, giving respect to the goal of this convention: keeping global warming at a level below 2ºC and try to limited as much as possible before it reaches 1.5ºC
 
 ## Team
-![Team]img/Team.png)
+![Team](./img/Team.png)
 
