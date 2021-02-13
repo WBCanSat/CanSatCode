@@ -100,7 +100,14 @@ void loop(){
 
 
         //Send information Radio
-
+        
+        Serial.print(seconds);
+        Serial.print(",");
+        Serial.print(temperature_val);
+        Serial.print(",");
+        Serial.print(pressure_val);
+        Serial.print(",");
+        Serial.println(altitude_val);
     }
 
     //check if it has reached the top
