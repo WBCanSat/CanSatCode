@@ -3,7 +3,7 @@
 
 ## Table of contents
 * [Info about our CanSat Project](#info-about-our-CanSat-Project)
-* [Primary Mission](#priamry-mission)
+* [Primary Mission](#primary-mission)
 * [Secondary Mission](#secondary-mission)
 
 ## Info about our CanSat Project
