@@ -4,49 +4,73 @@
 #include <SD.h>
 #include <SoftwareSerial.h>
 #include <TinyGPS.h>
+#include <MQ135.h>
 
-#define CS_pin 10
+#define CS_pin 9
 #define LED_pin 7
 #define buzz_pin 2
 #define RX_pin 4
 #define TX_pin 3
+#define MQ4_pin A0
+#define MQ135_pin A1
 
 int seconds;
-float altitude_val, pre_altitude_val, temperature_val, pressure_val;
-boolean top_alt = false;
-boolean reach_ground = false;
+float altitude_val, pre_altitude_val, temperature_val, pressure_val, latitude_val, longitude_val, co2_val; 
+float MQ4_volt, MQ4_RSgas, MQ4_ratio, MQ4_value, flat, flon;
+float MQ4_R0 = 11.820;
+float slope = -0.318;
+float y_intercept = 1.133;
+double methane_val, methane_log;
+char gps_data;
+boolean top_alt, reach_ground, new_data;
 
 File myFile;
 File topFile;
 Adafruit_BMP280 bmp;
 TinyGPS gps;
 SoftwareSerial softSerial(RX_pin, TX_pin);
+MQ135 gasSensor = MQ135(A1);
+
 
 void setup(){
 
     //Initialize sensors and board
 
     Serial.begin(9600);
+    softSerial.begin(9600);
     pinMode(LED_pin, OUTPUT);
     pinMode(CS_pin, OUTPUT);
     pinMode(buzz_pin, OUTPUT);
+    pinMode(MQ135_pin, INPUT);
+    pinMode(MQ4_pin, INPUT);
 
     //Check if it is working
 
-    if (bmp.begin(0x76) && SD.begin(CS_pin)) {
+    if (bmp.begin() && SD.begin(CS_pin) && softSerial.available()) {
         digitalWrite(LED_pin, HIGH);
     }
     else {
+        
+        if(!bmp.begin()){
+            Serial.print("bmp");
+        }
+        else if(!SD.begin()){
+            Serial.print("SD");
+        }
+        else if(!softSerial.available()){
+            Serial.print("GPS");
+        }
+        else{
+            Serial.print("Pégate un tiro");
+        }
 
         while(1) {
 
             digitalWrite(LED_pin, HIGH);
             delay(500);
             digitalWrite(LED_pin, LOW);
-            delay(1000);
-            
-        }
-        
+            delay(1000);   
+        } 
     }
 
     //Create datalog file
@@ -56,31 +80,44 @@ void setup(){
         myFile = SD.open("datalog.csv", FILE_WRITE);
         if (myFile) {
 
-            myFile.println("Time(s),Temperature(C),Pressure(hPa),Altitude(m)");
+            myFile.println("Time(s),Temperature(C),Pressure(hPa),Altitude(m),Latitude(),Longitude(),Methane(PPM),CO2(PPM)");
             myFile.close();
         }
-
     }
-
-    //Set parameters of BMP280
-
-    bmp.setSampling(Adafruit_BMP280::MODE_NORMAL,     /* Operating Mode. */
-                    Adafruit_BMP280::SAMPLING_X2,     /* Temp. oversampling */
-                    Adafruit_BMP280::SAMPLING_X16,    /* Pressure oversampling */
-                    Adafruit_BMP280::FILTER_X16,      /* Filtering. */
-                    Adafruit_BMP280::STANDBY_MS_500); /* Standby time. */
-
 }
 
 void loop(){
 
     if (!reach_ground) {
-        // Read sensors
+        // Read sensors:
 
+        //BMP280
         altitude_val = bmp.readAltitude(1013.25);
         temperature_val = bmp.readTemperature();
         pressure_val = bmp.readPressure()/100;
+        
+        //GPS
+        gps_data = softSerial.read();
+        if (gps.encode(gps_data)) {
+            new_data = true;
+        }
 
+        if (new_data) {
+            latitude_val = (flat == TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : flat, 6);
+            longitude_val = (flon == TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : flon, 6);
+        }
+
+        //MQ135
+        co2_val = gasSensor.getPPM();
+
+        //MQ4
+        MQ4_value = analogRead(MQ4_pin);
+        MQ4_volt = MQ4_value * (5.0 / 1023.0);
+        MQ4_RSgas = ((5.0 * 10.0) / MQ4_volt) - 10.0;
+        MQ4_ratio = MQ4_RSgas / MQ4_R0;
+
+        methane_log = (log10(MQ4_ratio) - y_intercept) / slope;
+        methane_val = pow(10, methane_log);
 
         //Save information SD
 
@@ -93,9 +130,16 @@ void loop(){
             myFile.print(",");
             myFile.print(pressure_val);
             myFile.print(",");
-            myFile.println(altitude_val);
-       
-         myFile.close();
+            myFile.print(altitude_val);
+            myFile.print(",");
+            myFile.print(latitude_val);
+            myFile.print(",");
+            myFile.print(longitude_val);
+            myFile.print(",");
+            myFile.print(methane_val);
+            myFile.print(",");
+            myFile.println(co2_val);
+            myFile.close();
         }
 
 
@@ -107,12 +151,20 @@ void loop(){
         Serial.print(",");
         Serial.print(pressure_val);
         Serial.print(",");
-        Serial.println(altitude_val);
+        Serial.print(altitude_val);
+        Serial.print(",");
+        Serial.print(latitude_val);
+        Serial.print(",");
+        Serial.print(longitude_val);
+        Serial.print(",");
+        Serial.print(methane_val);
+        Serial.print(",");
+        Serial.println(co2_val);
     }
 
     //check if it has reached the top
 
-    if (pre_altitude_val > altitude_val && !top_alt && altitude_val > 500) {
+    if (altitude_val - pre_altitude_val > 1 && !top_alt && altitude_val > 500) {
 
         top_alt = true;
 
