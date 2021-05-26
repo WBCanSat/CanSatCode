@@ -19,13 +19,13 @@ The objective of the Primary Mission is to measure two parameters while the CanS
 From the begining, the idea was to examine the zone's vegetation from the satellite. In order to do that, we would measure the plant's photosintesis efficiency, based on the chlorophyll fluorescence that these emit, with that we could determine how healthy forest biomes such as Green zones, forest, natural reserves... However, after an exhaustive investigation about this studio, we denied the idea due to the complexity for finding sensors that adapt to our maximum budget imposed in the bases of this competition. So, even though we opt to use the MQ sensor, the objective would still be mainly based on the environment: Identify increased emissions of green house effect gases in landfills, industries, busy cities and other tipe of danger zones that harm the environment and that they are above the imposed ones in the París agreement. All of that so it can be reduced when detected. How the data will be graphed and represented will be amplified in section 6.
 This idea can be extrapolated in different ways. First, even if we use the MQ sensors that have poor resolution, espectrometers of high image resolution could be used (high-resolution imaging spectrometer) so these variations could be observed from earth orbit. An example to this would be the Iris satellite from GHGSat, that can observe high concentrations of methane.
 
-![Methane 1](./img/Methane.jpg) { width=50% }
+![Methane 1](./img/Methane.jpg)
 
 ![Methane 2](./img/Methane2.jpg)
 
 At the same time, sensors that measure the concentration of chlorophyll fluorescence could be used, instead of those that measue green house effect gases. This extrapolation would be connected with our first idea.
 
-![Clorophyll](./img/Clorophyll.jpg) { width=50% }
+![Clorophyll](./img/Clorophyll.jpg)
 
 Last thing, supposing that the CanSat is a space satellite, it could be used to investigate the atmosphere of other planeta and check for the presence of any gases that promote life, for both alíen and future posible human colonies.
 
