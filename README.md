@@ -21,7 +21,7 @@ This idea can be extrapolated in different ways. First, even if we use the MQ se
 
 ![Methane 1](./img/Methane.jpg)
 
-![Methane 2](./img/Methane 2.jpg)
+![Methane 2](./img/Methane2.jpg)
 
 At the same time, sensors that measure the concentration of chlorophyll fluorescence could be used, instead of those that measue green house effect gases. This extrapolation would be connected with our first idea.
 
