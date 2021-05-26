@@ -1,6 +1,5 @@
 #include <Adafruit_BMP280.h>
 #include <SPI.h>
-#include <Wire.h>
 #include <SD.h>
 #include <SoftwareSerial.h>
 #include <TinyGPS.h>

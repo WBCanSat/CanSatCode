@@ -5,16 +5,38 @@
 * [Info about our CanSat Project](#info-about-our-CanSat-Project)
 * [Primary Mission](#primary-mission)
 * [Secondary Mission](#secondary-mission)
+* [Our team](#team)
+* [Libraries] (#libraries-used)
+
 
 ## Info about our CanSat Project
-In our CanSat Project we had to fulfil the requirements of the Primary mission and think of what to do for our secondary mission, also we needed to find the necessary sensors, equipment and materials to make our CanSat. In the next section the Primary Mission and our Secondary Mission will be explained.
+In our CanSat Project we had to fulfil the requirements of the Primary mission and think of what to do for our secondary mission, also we needed to find the necessary sensors, equipment and materials to make our CanSat.
 
 ## Primary Mission
 The objective of the Primary Mission is to measure two parameters while the CanSat descends, which are pressure and temperature. The gathered data is transmitted to the Earth Station via telemetry during the descent of the CanSat. We have chosen the UNO Arduino board as our main hardware component, as our Arduino language program (c/c++) and as vscode development environment.
 
 ## Secondary Mission
-In this case, the Secondary Mission is of our choice and decided by our group. Our idea for the Secondary Mission came up as a modification of a previous idea we decided not to use, the objective is to identify the increase of gas emissions of greenhouse effect in landfills, industries, overcrowded cities and other danger zones that harm the environment and so it’s above the imposed in the Paris agreement, giving respect to the goal of this convention: keeping global warming at a level below 2ºC and try to limited as much as possible before it reaches 1.5ºC
+From the begining, the idea was to examine the zone's vegetation from the satellite. In order to do that, we would measure the plant's photosintesis efficiency, based on the chlorophyll fluorescence that these emit, with that we could determine how healthy forest biomes such as Green zones, forest, natural reserves... However, after an exhaustive investigation about this studio, we denied the idea due to the complexity for finding sensors that adapt to our maximum budget imposed in the bases of this competition. So, even though we opt to use the MQ sensor, the objective would still be mainly based on the environment: Identify increased emissions of green house effect gases in landfills, industries, busy cities and other tipe of danger zones that harm the environment and that they are above the imposed ones in the París agreement. All of that so it can be reduced when detected. How the data will be graphed and represented will be amplified in section 6.
+This idea can be extrapolated in different ways. First, even if we use the MQ sensors that have poor resolution, espectrometers of high image resolution could be used (high-resolution imaging spectrometer) so these variations could be observed from earth orbit. An example to this would be the Iris satellite from GHGSat, that can observe high concentrations of methane.
+
+![Methane 1](./img/Methane.jpg)
+
+![Methane 2](./img/Methane 2.jpg)
+
+At the same time, sensors that measure the concentration of chlorophyll fluorescence could be used, instead of those that measue green house effect gases. This extrapolation would be connected with our first idea.
+
+![Clorophyll](./img/Clorophyll.jpg)
+
+Last thing, supposing that the CanSat is a space satellite, it could be used to investigate the atmosphere of other planeta and check for the presence of any gases that promote life, for both alíen and future posible human colonies.
 
 ## Team
 ![Team](./img/Team.png)
 
+## Libraries Used
+Technologies and libraries used in the CanSat code. Most of them can be installed from the library manager of the Arduino IDE.
+* [Adafruit BMP280](https://github.com/adafruit/Adafruit_BMP280_Library)
+* SPI 
+* SD 
+* [SoftwareSerial] 
+* [TinyGPS](https://github.com/mikalhart/TinyGPS)
+* [MQ135](https://github.com/GeorgK/MQ135)
