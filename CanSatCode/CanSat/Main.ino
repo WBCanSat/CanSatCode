@@ -9,13 +9,12 @@
 #define CS_pin 9
 #define LED_pin 7
 #define buzz_pin 2
-#define RX_pin 4
-#define TX_pin 3
+#define RX_pin 5
+#define TX_pin 6
 #define MQ4_pin A0
 #define MQ135_pin A1
 
-int seconds;
-float altitude_val, pre_altitude_val, temperature_val, pressure_val, latitude_val, longitude_val, co2_val; 
+float seconds, altitude_val, pre_altitude_val, temperature_val, pressure_val, latitude_val, longitude_val, co2_val; 
 float MQ4_volt, MQ4_RSgas, MQ4_ratio, MQ4_value, flat, flon;
 float MQ4_R0 = 11.820;
 float slope = -0.318;
@@ -23,6 +22,7 @@ float y_intercept = 1.133;
 double methane_val, methane_log;
 char gps_data;
 boolean top_alt, reach_ground, new_data;
+unsigned long age;
 
 File myFile;
 File topFile;
@@ -84,29 +84,37 @@ void setup(){
             myFile.close();
         }
     }
+    
 }
 
 void loop(){
 
     if (!reach_ground) {
         // Read sensors:
+      
+        //GPS
+        for (unsigned long star = millis(); millis() - start < 1000){
+
+            while(softSerial.available()){
+                gps_data = sofSerial.read();
+                if (gps.encode(gps_data)) {
+                    new_data = true;
+                }
+            }
+        }
+
+        if (new_data) {
+
+            gps.f_get_position(&flat, &flon, &age);
+            latitude_val = (flat == TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : flat, 6);
+            longitude_val = (flon == TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : flon, 6);
+        }
 
         //BMP280
         altitude_val = bmp.readAltitude(1013.25);
         temperature_val = bmp.readTemperature();
         pressure_val = bmp.readPressure()/100;
         
-        //GPS
-        gps_data = softSerial.read();
-        if (gps.encode(gps_data)) {
-            new_data = true;
-        }
-
-        if (new_data) {
-            latitude_val = (flat == TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : flat, 6);
-            longitude_val = (flon == TinyGPS::GPS_INVALID_F_ANGLE ? 0.0 : flon, 6);
-        }
-
         //MQ135
         co2_val = gasSensor.getPPM();
 
@@ -118,6 +126,9 @@ void loop(){
 
         methane_log = (log10(MQ4_ratio) - y_intercept) / slope;
         methane_val = pow(10, methane_log);
+
+        //Time
+        seconds= millis()/1000;
 
         //Save information SD
 
@@ -164,7 +175,7 @@ void loop(){
 
     //check if it has reached the top
 
-    if (altitude_val - pre_altitude_val > 1 && !top_alt && altitude_val > 500) {
+    if (altitude_val - pre_altitude_val > 3 && !top_alt && altitude_val > 200) {
 
         top_alt = true;
 
@@ -191,7 +202,4 @@ void loop(){
     }
 
     pre_altitude_val = altitude_val;
-
-    delay(1000);
-    seconds ++;
 }
