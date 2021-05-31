@@ -30,7 +30,11 @@ At the same time, sensors that measure the concentration of chlorophyll fluoresc
 Last thing, supposing that the CanSat is a space satellite, it could be used to investigate the atmosphere of other planeta and check for the presence of any gases that promote life, for both alíen and future posible human colonies.
 
 ## Team
-![Team](./img/Team.png)
+* Julio Quintero Díaz
+* Diego Iglesias Tejedor
+* Pablo Pacheco Reyes
+* Rubén Vargas Núñez
+* Mateo Moreno Castaño
 
 ## Libraries Used
 Technologies and libraries used in the CanSat code. Most of them can be installed from the library manager of the Arduino IDE.
