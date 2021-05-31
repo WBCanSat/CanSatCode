@@ -2,16 +2,25 @@ import processing.serial.*;
 
 Serial myPort;        // The serial port
 int xPos = 1;         // horizontal position of the graph
-float inByte = 0;     
-int COM = 4
-float times, temperature, pressure, altitude, latitude, longitude, methane, carbon;
+
+int COM = 0;
+float times=0;
+float temperature=0;
+float pressure=0;
+float altitude=0;
+float latitude=0;
+float longitude=0;
+float methane=0;
+float carbon=0;
 
 void setup () {
 
-  size(1920, 1080);                                             // set the window size.
-  Serial.printArray());
-  myPort = new Serial(this, Serial.list()[COM], 9600);          // Open port.
-  myPort.bufferUntil('\n');                                     // don't generate a serialEvent() unless you get a newline character:
+size(640, 480);      // set the window size.
+ 
+  printArray(Serial.list());
+
+  myPort = new Serial(this, Serial.list()[0], 9600);          // Open port.
+  myPort.bufferUntil(10);                                     // don't generate a serialEvent() unless you get a newline character:
 
   // set initial background:
   background(0);
@@ -20,7 +29,21 @@ void setup () {
 void draw () {
   // draw the line:
   stroke(127, 34, 255);
-  line(xPos, height, xPos, height - value[1]);
+  line(xPos, height, xPos, height - temperature);
+
+stroke(127, 34, 255);
+  line(xPos, height, xPos, height - pressure);
+
+stroke(127, 34, 255);
+  line(xPos, height, xPos, height - altitude);
+
+stroke(127, 34, 255);
+  line(xPos, height, xPos, height -  methane);
+
+stroke(127, 34, 255);
+  line(xPos, height, xPos, height - carbon);
+
+
 
   // at the edge of the screen, go back to the beginning:
   if (xPos >= width) {
@@ -34,19 +57,16 @@ void draw () {
 
 void serialEvent (Serial myPort) {
   // get the ASCII string:
-  String[] text_value = myPort.readString().split(\tabulador);
+  String[] text_value = myPort.readString().split("\t");
   float[] value= new float[text_value.length];
   for(int counter = 0; counter<text_value.length; counter++ ){
       value[counter]=parseFloat(text_value[counter]);
   }
-  
-  temperature = map(value[1], -200, 1023, 0, height);
-  pressure = map(value[2], -200, 1023, 0, height);
-  altitude = map(value[3], -200, 1023, 0, height);
-  methane = map(value[6], -200, 1023, 0, height);
-  carbon = map(value[7], -200, 1023, 0, height);
 
-  redraw();
+  temperature = map(value[1], -20, 60, 0, 180);
+  pressure = map(value[2], 1037.51, 877.16, 180,360 );
+  altitude = map(value[3], -200, 1200, 360,540);
+  methane = map(value[6], 1000, 2000, 0, height);
+  carbon = map(value[7], 100, 700, 0, height);
 
-  }
 }
