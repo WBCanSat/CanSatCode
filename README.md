@@ -6,7 +6,7 @@
 * [Primary Mission](#primary-mission)
 * [Secondary Mission](#secondary-mission)
 * [Our team](#team)
-* [Libraries] (#libraries-used)
+* [Libraries](#libraries-used)
 
 
 ## Info about our CanSat Project
