@@ -45,22 +45,24 @@ void setup(){
 
     //Check if it is working
 
+    Serial.println("Inicializando sistema...");
+
     if (bmp.begin() && SD.begin(CS_pin) && softSerial.available()) {
         digitalWrite(LED_pin, HIGH);
     }
     else {
         
         if(!bmp.begin()){
-            Serial.print("bmp");
+            Serial.print("Error con el BMP.");
         }
         else if(!SD.begin()){
-            Serial.print("SD");
+            Serial.print("Error con la SD.");
         }
         else if(!softSerial.available()){
-            Serial.print("GPS");
+            Serial.print("Error con el GPS.");
         }
         else{
-            Serial.print("Pégate un tiro");
+            Serial.print("Pégate un tiro, nada tiene sentido.");
         }
 
         while(1) {
